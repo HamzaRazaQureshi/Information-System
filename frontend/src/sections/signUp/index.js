@@ -1,1 +1,1 @@
-export { default as LoginForm } from './signUpform';
+export { default as SignUpForm } from './signUpform';
