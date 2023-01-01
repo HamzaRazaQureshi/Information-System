@@ -1,53 +1,77 @@
-const mysql = require('mysql');
+const mysql = require("mysql");
 const con = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'mis'
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "mis",
 });
-const express = require('express');
+const express = require("express");
 const app = express();
 app.use(express.json());
 
-app.get('/', (req,res)=>{
-    con.query("select * from mis_user",(err,result)=>{
-        if(err){
-            throw err;
-        }else{
-            res.send(result);
-        }
-    });
-});
-app.post('/',(req,res)=>{
-    const data = req.body;
-    con.query("INSERT INTO mis_user SET ?",data,(err,result)=>{
-    if(err){
-        throw err;
-    }else{
-        res.send(result);
+const cors = require("cors");
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+app.get("/getAllUsers", (req, res) => {
+  con.query("select * from users", (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
     }
-});
-});
-
-app.put('/:USER_ID', (req,res)=>{
-    const data = [req.body.USER_NAME,req.body.USER_EMAIL,req.body.USER_PASSWORD,req.params.USER_ID];
-    con.query("UPDATE mis_user SET USER_NAME = ?, USER_EMAIL = ?, USER_PASSWORD = ? where USER_ID = ?",data,(err,result)=>{
-        if(err){
-            throw err;
-        }else{
-            res.send(result);
-        }
-    })
+  });
 });
 
-app.delete('/:USER_ID', (req,res)=>{
-    let user_id = req.params.USER_ID;
-    con.query("DELETE from mis_user where USER_ID = "+user_id,(err,result)=>{
-        if(err){
-            throw err;
-        }else{
-            res.send(result);
-        }
-    });
-})
+app.get("/getUser/:userId", (req, res) => {
+  let userId = req.params.userId;
+  con.query(`select * from users where id = ${userId}`, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/validateUser/:values", (req, res) => {
+  const values = req.params.values;
+  const splitValue = values.split("&");
+  const email = splitValue[0];
+  const password = splitValue[1];
+  con.query(`select * from users where email = "${email}" and password = "${password}"`, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/addUser", (req, res) => {
+  const data = req.body;
+  con.query("INSERT INTO users SET ?", data, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.delete("/deleteUser/:userId", (req, res) => {
+  let userId = req.params.userId;
+  con.query(`DELETE from users where id = ${userId}`, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
 app.listen(4300);
