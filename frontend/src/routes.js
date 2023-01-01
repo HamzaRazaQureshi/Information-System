@@ -4,9 +4,9 @@ import DashboardLayout from './layouts/dashboard';
 //
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
-import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import SignUpPage from './pages/SignUpPage';
 
 // ----------------------------------------------------------------------
 
@@ -27,17 +27,16 @@ export default function Router() {
       element: <LoginPage />,
     },
     {
+      path: 'signup',
+      element: <SignUpPage />,
+    },
+    {
       path: '/',
       element: <LoginPage />,
-      children: [
-        { element: <Navigate to="/login" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
-      ],
     },
     {
       path: '*',
-      element: <Navigate to="/404" replace />,
+      element: <LoginPage />,
     },
   ]);
 
