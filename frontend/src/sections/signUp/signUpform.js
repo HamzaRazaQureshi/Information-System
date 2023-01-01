@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import {
@@ -14,6 +13,8 @@ import {
   Alert,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 // components
 import Iconify from '../../components/iconify';
 
@@ -24,13 +25,30 @@ export default function SignUpForm() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
   const [error, showError] = useState('');
 
   const handleClick = () => {
-    if (email && password && role) {
-      navigate('/login', { replace: true });
+    if (name && email && password && role) {
+      const url = 'http://localhost:4300/addUser';
+      const config = { headers: { 'Access-Control-Allow-Origin': '*' } };
+      const data = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "role": role,
+      };
+      axios.post(url, data, config).then(
+        (response) => {
+          console.log(response);
+          navigate('/login', { replace: true });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     } else {
       showError(true);
     }
@@ -44,6 +62,10 @@ export default function SignUpForm() {
     setEmail(event.target.value);
   };
 
+  const handleName = (event) => {
+    setName(event.target.value);
+  };
+
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
@@ -51,6 +73,7 @@ export default function SignUpForm() {
   return (
     <>
       <Stack spacing={3}>
+        <TextField name="name" label="Name" value={name} onChange={handleName} />
         <TextField name="email" label="Email address" value={email} onChange={handleEmail} />
 
         <TextField

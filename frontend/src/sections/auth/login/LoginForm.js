@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import signedUser from '../../../_mock/signedUser';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +20,21 @@ export default function LoginForm() {
 
   const handleClick = () => {
     if (email && password) {
-      navigate('/dashboard', { replace: true });
+      const url = `http://localhost:4300/validateUser/${email}&${password}`;
+      const config = { headers: { 'Access-Control-Allow-Origin': '*' } };
+      axios.get(url, config).then(
+        (response) => {
+          if(response.data.length > 0){
+            signedUser.name = response.data[0].name;
+            signedUser.email = response.data[0].email;
+            signedUser.role = response.data[0].role;
+            navigate('/dashboard', { replace: true });
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     } else {
       showError(true);
     }

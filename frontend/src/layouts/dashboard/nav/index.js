@@ -14,6 +14,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import signedUser from '../../../_mock/signedUser';
 
 // ----------------------------------------------------------------------
 
@@ -75,7 +76,9 @@ export default function Nav({ openNav, onCloseNav }) {
         </Link>
       </Box> */}
 
-      <NavSection data={navConfig} />
+      <NavSection
+        data={signedUser.role !== 'Manager' ? navConfig.filter((item) => item.title !== 'user') : navConfig}
+      />
 
       <Box sx={{ flexGrow: 1 }} />
 
