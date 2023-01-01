@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState, useEffect } from 'react';
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 // @mui
 import {
   Card,
@@ -30,17 +30,34 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
+// import USERLIST from '../_mock/user';
+import signedUser from '../_mock/signedUser';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
+
+let USERLIST = [];
+const url = `http://localhost:4300/getAllUsers`;
+const config = { headers: { 'Access-Control-Allow-Origin': '*' } };
+axios.get(url, config).then(
+  (response) => {
+    if (response.data.length > 0) {
+      USERLIST = response.data;
+      USERLIST.forEach((user) => {
+        user.avatarUrl = `/assets/images/avatars/avatar_${Math.round(Math.random() + 1)}.jpg`;
+        console.log(user.avatarUrl);
+      });
+    }
+  },
+  (error) => {
+    console.log(error);
+  }
+);
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +93,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  console.log(signedUser);
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -89,18 +107,6 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [users, setUser] = useState([]);
-
-  useEffect(() => {
-    const url = 'https://jsonplaceholder.typicode.com/posts';
-    const config = {headers: {"Access-Control-Allow-Origin": "*"}};
-    axios.get(url, config).then((response) => {
-      setUser(response.data);
-    });
-  }, []);
-
-  console.log(users);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -171,9 +177,6 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
         </Stack>
 
         <Card>
@@ -193,7 +196,7 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, name, role, email, avatarUrl } = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -211,15 +214,9 @@ export default function UserPage() {
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
 
                         <TableCell align="left">{role}</TableCell>
-
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
