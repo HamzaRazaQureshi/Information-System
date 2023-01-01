@@ -56,7 +56,7 @@ export default function LoginForm() {
       </Stack>
 
       <br />
-      <div>{error ? <Alert severity="error">Opps! You missed some fileds</Alert> : null}</div>
+      <div>{error ? <Alert severity="error">Oops! You missed some fileds</Alert> : null}</div>
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login
       </LoadingButton>

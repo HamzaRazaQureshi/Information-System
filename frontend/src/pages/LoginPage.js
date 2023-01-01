@@ -53,7 +53,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> IS Login </title>
       </Helmet>
 
       <StyledRoot>

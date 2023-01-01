@@ -46,7 +46,7 @@ export default function SignUpPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> IS Create Account </title>
       </Helmet>
 
       <StyledRoot>
