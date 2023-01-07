@@ -51,9 +51,10 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" value={email} onChange={handleEmail} />
+        <TextField required name="email" label="Email address" value={email} onChange={handleEmail} />
 
         <TextField
+          required
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
@@ -72,7 +73,7 @@ export default function LoginForm() {
       </Stack>
 
       <br />
-      <div>{error ? <Alert severity="error">Opps! You missed some fileds</Alert> : null}</div>
+      <div>{error ? <Alert severity="error">Oops! You missed some fileds</Alert> : null}</div>
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login
       </LoadingButton>

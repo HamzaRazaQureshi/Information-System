@@ -42,22 +42,6 @@ const TABLE_HEAD = [
 ];
 
 let USERLIST = [];
-const url = `http://localhost:4300/getAllUsers`;
-const config = { headers: { 'Access-Control-Allow-Origin': '*' } };
-axios.get(url, config).then(
-  (response) => {
-    if (response.data.length > 0) {
-      USERLIST = response.data;
-      USERLIST.forEach((user) => {
-        user.avatarUrl = `/assets/images/avatars/avatar_${Math.round(Math.random() + 1)}.jpg`;
-        console.log(user.avatarUrl);
-      });
-    }
-  },
-  (error) => {
-    console.log(error);
-  }
-);
 
 // ----------------------------------------------------------------------
 
@@ -94,6 +78,7 @@ function applySortFilter(array, comparator, query) {
 
 export default function UserPage() {
   console.log(signedUser);
+  getAllUsers();
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -301,5 +286,24 @@ export default function UserPage() {
         </MenuItem>
       </Popover>
     </>
+  );
+}
+
+function getAllUsers() {
+  const url = `http://localhost:4300/getAllUsers`;
+  const config = { headers: { 'Access-Control-Allow-Origin': '*' } };
+  axios.get(url, config).then(
+    (response) => {
+      if (response.data.length > 0) {
+        USERLIST = response.data;
+        USERLIST.forEach((user) => {
+          user.avatarUrl = `/assets/images/avatars/avatar_${Math.round(Math.random() + 1)}.jpg`;
+          console.log(user.avatarUrl);
+        });
+      }
+    },
+    (error) => {
+      console.log(error);
+    }
   );
 }
