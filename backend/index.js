@@ -19,7 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.get("/getAllUsers", (req, res) => {
-  con.query("select * from users", (err, result) => {
+  con.query("select * from users order by id desc", (err, result) => {
     if (err) {
       throw err;
     } else {
@@ -74,4 +74,26 @@ app.delete("/deleteUser/:userId", (req, res) => {
     }
   });
 });
+
+app.post("/addProduct", (req, res) => {
+  const data = req.body;
+  con.query("INSERT INTO products SET ?", data, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/getAllProducts", (req, res) => {
+  con.query("select * from products order by id desc", (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 app.listen(4300);

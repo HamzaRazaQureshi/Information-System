@@ -73,10 +73,11 @@ export default function SignUpForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="name" label="Name" value={name} onChange={handleName} />
-        <TextField name="email" label="Email address" value={email} onChange={handleEmail} />
+        <TextField required name="name" label="Name" value={name} onChange={handleName} />
+        <TextField required name="email" label="Email address" value={email} onChange={handleEmail} />
 
         <TextField
+          required
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
@@ -96,6 +97,7 @@ export default function SignUpForm() {
       <br />
       <InputLabel id="demo-simple-select-label">Role</InputLabel>
       <Select
+        required
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={role}

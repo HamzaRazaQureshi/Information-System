@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2023 at 03:04 PM
+-- Generation Time: Jan 07, 2023 at 10:30 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -19,6 +19,23 @@ SET time_zone = "+00:00";
 
 --
 -- Database: `mis`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `price` decimal(18,6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
 --
 
 -- --------------------------------------------------------
@@ -43,11 +60,18 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (2, 'hamza', 'test@yopmail.com', '123', 'Manager'),
 (3, 'jon', 'jon@yopmail.com', '123', 'Salesperson'),
 (8, 'shaddy', 'shadd@yopmail.com', '123', 'Manager'),
-(11, 'test', 'test123@yopmail.com', 'MTIz', 'Salesperson');
+(11, 'test', 'test123@yopmail.com', 'MTIz', 'Salesperson'),
+(12, 'demo', 'demo@yopmail.com', '123', 'Manager');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -61,10 +85,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

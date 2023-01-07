@@ -51,9 +51,10 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" value={email} onChange={handleEmail} />
+        <TextField required name="email" label="Email address" value={email} onChange={handleEmail} />
 
         <TextField
+          required
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
