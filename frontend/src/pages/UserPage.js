@@ -77,7 +77,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
-  console.log(signedUser);
   getAllUsers();
   const [open, setOpen] = useState(null);
 
@@ -154,7 +153,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User | IMS </title>
       </Helmet>
 
       <Container>
@@ -165,7 +164,7 @@ export default function UserPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar selectedUsers={selected} numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -204,9 +203,9 @@ export default function UserPage() {
                         <TableCell align="left">{role}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          {/* <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
                             <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+                          </IconButton> */}
                         </TableCell>
                       </TableRow>
                     );
@@ -257,34 +256,36 @@ export default function UserPage() {
         </Card>
       </Container>
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
+      {signedUser.role === 'Manager' && (
+        <Popover
+          open={Boolean(open)}
+          anchorEl={open}
+          onClose={handleCloseMenu}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          PaperProps={{
+            sx: {
+              p: 1,
+              width: 140,
+              '& .MuiMenuItem-root': {
+                px: 1,
+                typography: 'body2',
+                borderRadius: 0.75,
+              },
             },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
+          }}
+        >
+          <MenuItem>
+            <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+            Edit
+          </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+          <MenuItem sx={{ color: 'error.main' }}>
+            <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+            Delete
+          </MenuItem>
+        </Popover>
+      )}
     </>
   );
 }
@@ -292,14 +293,15 @@ export default function UserPage() {
 function getAllUsers() {
   const url = `http://localhost:4300/getAllUsers`;
   const config = { headers: { 'Access-Control-Allow-Origin': '*' } };
+  let users = [];
   axios.get(url, config).then(
     (response) => {
       if (response.data.length > 0) {
-        USERLIST = response.data;
-        USERLIST.forEach((user) => {
+        users = response.data;
+        users.forEach((user) => {
           user.avatarUrl = `/assets/images/avatars/avatar_${Math.round(Math.random() + 1)}.jpg`;
-          console.log(user.avatarUrl);
         });
+        USERLIST = users.filter((user) => user.name !== signedUser.name);
       }
     },
     (error) => {
