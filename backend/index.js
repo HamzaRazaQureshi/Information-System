@@ -64,9 +64,9 @@ app.post("/addUser", (req, res) => {
   });
 });
 
-app.delete("/deleteUser/:userId", (req, res) => {
-  let userId = req.params.userId;
-  con.query(`DELETE from users where id = ${userId}`, (err, result) => {
+app.delete("/deleteUser/:userName", (req, res) => {
+  let userName = req.params.userName;
+  con.query(`DELETE from users where name = "${userName}"`, (err, result) => {
     if (err) {
       throw err;
     } else {
@@ -74,6 +74,18 @@ app.delete("/deleteUser/:userId", (req, res) => {
     }
   });
 });
+
+app.put("/updateUser", (req, res) => {
+  const data = req.body;
+  con.query(`UPDATE users set role = '${data.role}' where name = '${data.name}'`, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 
 app.post("/addProduct", (req, res) => {
   const data = req.body;
@@ -88,6 +100,29 @@ app.post("/addProduct", (req, res) => {
 
 app.get("/getAllProducts", (req, res) => {
   con.query("select * from products order by id desc", (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.put("/updateProduct/:id", (req, res) => {
+  let id = req.params.id;
+  const data = req.body;
+  con.query(`UPDATE products set name='${data.name}', description='${data.description}', price=${data.price} where id = ${id}`, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.delete("/deleteProduct/:id", (req, res) => {
+  let id = req.params.id;
+  con.query(`DELETE from products where id = ${id}`, (err, result) => {
     if (err) {
       throw err;
     } else {
