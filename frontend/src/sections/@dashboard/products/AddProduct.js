@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Stack, Button, TextField, InputAdornment, Alert } from '@mui/material';
+import signedUser from '../../../_mock/signedUser';
 
 export default function AddProduct() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function AddProduct() {
         'name': name,
         'description': description,
         'price': price,
+        'userId': signedUser.id,
       };
       axios.post(url, data, config).then(
         (response) => {
