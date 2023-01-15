@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2023 at 04:40 PM
+-- Generation Time: Jan 15, 2023 at 09:29 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -31,30 +31,16 @@ CREATE TABLE `products` (
   `id` int(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `price` decimal(18,6) NOT NULL
+  `price` decimal(18,6) NOT NULL,
+  `userId` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`) VALUES
-(1, 'Test Product', 'testing puprose', '0.000000'),
-(3, 'test', '', '0.000000'),
-(4, 'tttt', '', '0.000000'),
-(5, 'qqqq', '', '0.000000'),
-(6, 'qqqq', '', '0.000000'),
-(7, 'qqqqww', '', '0.000000'),
-(8, 'qqqqww', '', '0.000000'),
-(9, 'ererw', '', '0.000000'),
-(10, 'wwwew', '', '0.000000'),
-(11, 'wwwew', '', '0.000000'),
-(12, 'wwwew', '', '0.000000'),
-(13, 'wwwew', '', '0.000000'),
-(14, 'wqe', '', '0.000000'),
-(16, 'TEUUIUIIUWQIQ', '', '1000.000000'),
-(17, 'OPOPOPOPOP', '', '589898.000000'),
-(18, 'RRRRRRRRR', '', '400.000000');
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `userId`) VALUES
+(23, 'shoes', 'new shoes', '7200.000000', 14);
 
 -- --------------------------------------------------------
 
@@ -76,7 +62,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (14, 'shadd', 'shadd@yopmail.com', '123', 'Manager'),
-(15, 'tony', 'tony@yopmail.com', '123', 'Salesperson');
+(15, 'tony', 'tony@yopmail.com', '123', 'Salesperson'),
+(16, 'hrq', 'hrq@yopmail.com', '123', 'Manager');
 
 --
 -- Indexes for dumped tables
@@ -86,7 +73,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`);
 
 --
 -- Indexes for table `users`
@@ -104,13 +92,23 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `user` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

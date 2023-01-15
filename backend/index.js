@@ -131,4 +131,14 @@ app.delete("/deleteProduct/:id", (req, res) => {
   });
 });
 
+app.get("/getProductsForReport", (req, res) => {
+  con.query(`SELECT p.name as ProductName, p.description as ProductDescription, p.price as ProductPrice, u.name as UserName, u.email as UserEmail, u.role as UserRole FROM products p INNER JOIN users u on p.userId = u.id`, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 app.listen(4300);
